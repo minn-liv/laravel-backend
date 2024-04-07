@@ -17,8 +17,9 @@ class CreateClinicsTable extends Migration
             $table->id();
             $table->string('address');
             $table->string('name');
-            $table->text('description');
-            $table->string('image');
+            $table->text('descriptionMarkdown');
+            $table->text('descriptionHTML');
+            $table->binary('image');
             $table->timestamps();
         });
     }

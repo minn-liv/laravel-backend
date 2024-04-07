@@ -18,8 +18,9 @@ class CreateBookingsTable extends Migration
             $table->string('statusId');
             $table->integer('doctorId');
             $table->integer('patientId');
-            $table->dateTime('date'); 
+            $table->string('date'); 
             $table->string('timeType'); 
+            $table->string('token'); 
             $table->timestamps();
         });
     }

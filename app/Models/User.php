@@ -1,44 +1,107 @@
 <?php
 
+/**
+ * Created by Reliese Model.
+ */
+
 namespace App\Models;
 
-use Illuminate\Contracts\Auth\MustVerifyEmail;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Notifications\Notifiable;
-use Laravel\Sanctum\HasApiTokens;
+use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Model;
 
-class User extends Authenticatable
+/**
+ * Class User
+ * 
+ * @property int $id
+ * @property string|null $email
+ * @property string|null $password
+ * @property string|null $firstName
+ * @property string|null $lastName
+ * @property string|null $address
+ * @property string|null $gender
+ * @property string|null $roleId
+ * @property string|null $phonenumber
+ * @property string|null $positionId
+ * @property string|null $image
+ * @property Carbon $createdAt
+ * @property Carbon $updatedAt
+ *
+ * @package App\Models
+ */
+class User extends Model
 {
-    use HasApiTokens, HasFactory, Notifiable;
+    protected $table = 'users';
+    public $timestamps = false;
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array<int, string>
-     */
+    protected $casts = [
+        'createdAt' => 'datetime',
+        'updatedAt' => 'datetime'
+    ];
+
+    protected $hidden = [
+        // 'password'
+    ];
+
     protected $fillable = [
-        'name',
+        'id',
         'email',
         'password',
+        'firstName',
+        'lastName',
+        'address',
+        'gender',
+        'roleId',
+        'phonenumber',
+        'positionId',
+        'image',
+        'createdAt',
+        'updatedAt'
     ];
 
-    /**
-     * The attributes that should be hidden for serialization.
-     *
-     * @var array<int, string>
-     */
-    protected $hidden = [
-        'password',
-        'remember_token',
-    ];
+    public static $snakeAttributes = false;
 
-    /**
-     * The attributes that should be cast.
-     *
-     * @var array<string, string>
-     */
-    protected $casts = [
-        'email_verified_at' => 'datetime',
-    ];
+    public function positionData()
+    {
+        return $this->belongsTo(Allcode::class, 'positionId', 'keyMap');
+    }
+
+    public function genderData()
+    {
+        return $this->belongsTo(Allcode::class, 'gender', 'keyMap');
+    }
+
+    public function Markdown()
+    {
+        return $this->hasOne(Markdown::class, 'doctorId', 'id');
+    }
+    public function Doctor_Infor()
+    {
+        return $this->hasOne(DoctorInfor::class, 'doctorId', 'id');
+    }
+
+    public function doctorData()
+    {
+        return $this->hasMany(Schedule::class, 'doctorId', 'id');
+    }
+
+    public function patientData()
+    {
+        return $this->hasMany(Booking::class, 'patientId', 'id');
+    }
+
+
+    public static function getAllUser()
+    {
+        $users = self::all();
+        foreach ($users as $user) {
+            $user->image = base64_encode($user->image);
+        }
+        return $users;
+    }
+    public static function checkEmailUser($email)
+    {
+        $user = self::where('email', $email)->first();
+
+        return $user;
+    }
 }

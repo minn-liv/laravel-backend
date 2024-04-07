@@ -16,6 +16,8 @@ class CreateDoctorInforTable extends Migration
         Schema::create('doctor_infor', function (Blueprint $table) {
             $table->id();
             $table->integer('doctorId');
+            $table->integer('specialtyId');
+            $table->integer('clinicId');
             $table->string('priceId');
             $table->string('provinceId');
             $table->string('paymentId');

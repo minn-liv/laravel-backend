@@ -15,9 +15,10 @@ class CreateSpecialtiesTable extends Migration
     {
         Schema::create('specialties', function (Blueprint $table) {
             $table->id();
-            $table->string('image');
+            $table->binary('image');
             $table->string('name');
-            $table->string('description');
+            $table->longText('descriptionHTML');
+            $table->longText('descriptionMarkdown');
             $table->timestamps();
         });
     }
