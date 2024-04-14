@@ -52,6 +52,15 @@ class Booking extends Model
 		'updatedAt'
 	];
 
+	public function doctorData()
+	{
+		return $this->belongsTo(User::class, 'doctorId', 'id');
+	}
+
+	public function doctorDataList()
+	{
+		return $this->belongsTo(User::class, 'doctorId', 'id');
+	}
 	public function patientData()
 	{
 		return $this->belongsTo(User::class, 'patientId', 'id');

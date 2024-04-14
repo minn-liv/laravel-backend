@@ -23,11 +23,15 @@ class DoctorController extends Controller
         $input = $request->all();
         $limit = $input['limit'];
         try {
-            $user = User::with('positionData')->with('genderData')->where('roleId', 'R2')->orderBy('created_at', 'DESC')->limit($limit)->get();
+            // $user = User::with('positionData')->with('genderData')->where('roleId', 'R2')->orderBy('created_at', 'DESC')->limit($limit)->get();
 
+            // mb_convert_encoding($user['name'], 'UTF-8', 'UTF-8');
+
+            $users = User::where('roleId', 'R2')->limit($limit)->with('positionData')->with('genderData')->get();
+            $users->makeHidden(['password', 'image']);
             return response()->json([
                 'errCode' => 0,
-                'data' => $user
+                'data' => $users
             ]);
         } catch (Exception $e) {
             return response()->json([
@@ -408,6 +412,26 @@ class DoctorController extends Controller
             return response()->json([
                 'errCode' => 1,
                 'errMessage' => 'Missing required parameter'
+            ]);
+        }
+    }
+
+    public function getAllBooking()
+    {
+
+        try {
+            $data = Booking::with('timeTypeDataPatient')
+                ->with('patientData')
+                ->with('doctorDataList')
+                ->get();
+            return response()->json([
+                'errCode' => 0,
+                'data' => $data
+            ]);
+        } catch (Exception $e) {
+            return response()->json([
+                'errCode' => -1,
+                'data' => 'Error from server... ' . $e->getMessage()
             ]);
         }
     }

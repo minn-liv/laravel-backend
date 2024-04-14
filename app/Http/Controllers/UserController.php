@@ -143,9 +143,9 @@ class UserController extends Controller
             if ($id === 'ALL') {
                 $users = User::getAllUser();
             }
-            if ($id !== 'ALL') {
-                $users = User::getUser($id);
-            }
+            // if ($id !== 'ALL') {
+            //     $users = User::getUser($id);
+            // }
         }
 
         return response()->json([
@@ -208,8 +208,8 @@ class UserController extends Controller
                 $user->roleId = $input['roleId'];
                 $user->positionId = $input['positionId'];
                 $user->image = base64_decode($input['avatar']);
-                $user->createdAt =  new DateTime();
-                $user->updatedAt =  new DateTime();
+                $user->created_at =  new DateTime();
+                $user->updated_at =  new DateTime();
 
                 $user->save();
                 return response()->json([
@@ -269,8 +269,9 @@ class UserController extends Controller
         if (isset($input['id'])) {
             $user = User::findOrFail($input['id']);
             if (isset($user)) {
-                $user->delete();
-
+                // $user->delete();
+                $user->is_deleted = 1;
+                $user->update();
                 return response()->json([
                     'errCode' => 0,
                     'errMessage' => 'The user is deleted '

@@ -51,3 +51,5 @@ Route::get('/get-detail-specialty-by-id', 'SpecialtyController@getDetailSpecialt
 Route::post('/create-new-clinic', 'ClinicController@createClinic');
 Route::get('/get-all-clinic', 'ClinicController@getAllClinic');
 Route::get('/get-detail-clinic-by-id', 'ClinicController@getDetailClinicById');
+
+Route::get('/get-all-booking', 'DoctorController@getAllBooking');

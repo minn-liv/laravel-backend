@@ -55,7 +55,8 @@ class User extends Model
         'positionId',
         'image',
         'createdAt',
-        'updatedAt'
+        'updatedAt',
+        'is_deleted'
     ];
 
     public static $snakeAttributes = false;
@@ -92,7 +93,7 @@ class User extends Model
 
     public static function getAllUser()
     {
-        $users = self::all();
+        $users = self::where('is_deleted', 0)->get();
         foreach ($users as $user) {
             $user->image = base64_encode($user->image);
         }
